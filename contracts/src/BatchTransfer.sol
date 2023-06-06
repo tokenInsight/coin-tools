@@ -37,4 +37,11 @@ contract BatchTransfer {
             token.transfer(recipients[i], amounts[i]);
         }
     }
+
+    function batchTransferTokenSimple(IERC20 token, address[] calldata recipients, uint256[] calldata amounts) external {
+        require(recipients.length == amounts.length, "Recipients and amounts arrays must have the same length");
+        for (uint256 i = 0; i < recipients.length; i++) {
+            token.transferFrom(msg.sender, recipients[i], amounts[i]);
+        }
+    }
 }
