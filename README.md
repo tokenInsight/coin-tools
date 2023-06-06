@@ -8,8 +8,7 @@ A smart contract that supports batch transfers of ETH or ERC20 tokens to multipl
 ## `test/BatchTransfer.t.sol` 
 Contains the corresponding unit test cases.
 
-# Compilation Instructions
-
+# How to build
 1. First, install Foundry: https://github.com/foundry-rs/foundry
 2. Compile: `forge build`
 3. Run the unit test cases: `forge test`
