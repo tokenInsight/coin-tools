@@ -43,7 +43,7 @@ contract BatchTransferTest is Test {
         vm.deal(alice, 1000 ether);
         assertEq(alice.balance, 1000 ether);
         assertEq(bob.balance, 1 ether);
-        
+
         address payable[] memory recvs = new address payable[](3);
         recvs[0] = bob;
         recvs[1] = jack;
@@ -75,9 +75,8 @@ contract BatchTransferTest is Test {
         amounts[0] = 100 ether;
         amounts[1] = 200 ether;
         amounts[2] = 300 ether;
-        trans.batchTransferEther{value:599 ether}(recvs, amounts);
+        trans.batchTransferEther{value: 599 ether}(recvs, amounts);
     }
-
 
     function testFail_TransETH_AVAILABE_NOT_ENOUGH() public {
         vm.deal(alice, 599 ether);
@@ -91,9 +90,8 @@ contract BatchTransferTest is Test {
         amounts[0] = 100 ether;
         amounts[1] = 200 ether;
         amounts[2] = 300 ether;
-        trans.batchTransferEther{value:600 ether}(recvs, amounts);
+        trans.batchTransferEther{value: 600 ether}(recvs, amounts);
     }
-
 
     function testFail_TransETH_LENGTH_MISS_MATCH() public {
         vm.deal(alice, 600 ether);
@@ -106,12 +104,12 @@ contract BatchTransferTest is Test {
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 100 ether;
         amounts[1] = 200 ether;
-        trans.batchTransferEther{value:600 ether}(recvs, amounts);
+        trans.batchTransferEther{value: 600 ether}(recvs, amounts);
     }
 
     function test_TransERC20() public {
         faucet.drip(alice, 90);
-        address [] memory recvs = new address[](3);
+        address[] memory recvs = new address[](3);
         recvs[0] = bob;
         recvs[1] = jack;
         recvs[2] = rose;
@@ -119,11 +117,11 @@ contract BatchTransferTest is Test {
         amounts[0] = 10;
         amounts[1] = 20;
         amounts[2] = 30;
-        
+
         //console.log(token.balanceOf(alice));
         assertEq(token.balanceOf(alice), 90);
         vm.prank(alice); //mock sender
-        require(token.approve(address(trans), 60)); 
+        require(token.approve(address(trans), 60));
         vm.prank(alice); //mock sender
         trans.batchTransferToken(IERC20(address(token)), recvs, amounts);
         assertEq(token.balanceOf(bob), 10);
@@ -131,10 +129,9 @@ contract BatchTransferTest is Test {
         assertEq(token.balanceOf(rose), 30);
     }
 
-
     function testFail_TransERC20_NO_ALLOWRANCE() public {
         faucet.drip(alice, 90);
-        address [] memory recvs = new address[](3);
+        address[] memory recvs = new address[](3);
         recvs[0] = bob;
         recvs[1] = jack;
         recvs[2] = rose;
@@ -142,7 +139,7 @@ contract BatchTransferTest is Test {
         amounts[0] = 10;
         amounts[1] = 20;
         amounts[2] = 30;
-        
+
         //console.log(token.balanceOf(alice));
         assertEq(token.balanceOf(alice), 90);
         vm.prank(alice); //mock sender
@@ -151,7 +148,7 @@ contract BatchTransferTest is Test {
 
     function testFail_TransERC20_NO_ENOUGH_ALLOWRANCE() public {
         faucet.drip(alice, 90);
-        address [] memory recvs = new address[](3);
+        address[] memory recvs = new address[](3);
         recvs[0] = bob;
         recvs[1] = jack;
         recvs[2] = rose;
@@ -159,18 +156,18 @@ contract BatchTransferTest is Test {
         amounts[0] = 10;
         amounts[1] = 20;
         amounts[2] = 30;
-        
+
         //console.log(token.balanceOf(alice));
         assertEq(token.balanceOf(alice), 90);
         vm.prank(alice); //mock sender
-        require(token.approve(address(trans), 59)); 
+        require(token.approve(address(trans), 59));
         vm.prank(alice); //mock sender
         trans.batchTransferToken(IERC20(address(token)), recvs, amounts);
     }
 
     function testFail_TransERC20_NO_ENOUGH_FUND() public {
         faucet.drip(alice, 59);
-        address [] memory recvs = new address[](3);
+        address[] memory recvs = new address[](3);
         recvs[0] = bob;
         recvs[1] = jack;
         recvs[2] = rose;
@@ -178,32 +175,125 @@ contract BatchTransferTest is Test {
         amounts[0] = 10;
         amounts[1] = 20;
         amounts[2] = 30;
-        
+
         //console.log(token.balanceOf(alice));
         assertEq(token.balanceOf(alice), 59);
         vm.prank(alice); //mock sender
-        require(token.approve(address(trans), 59)); 
+        require(token.approve(address(trans), 59));
         vm.prank(alice); //mock sender
         trans.batchTransferToken(IERC20(address(token)), recvs, amounts);
     }
 
     function testFail_TransERC20_LEN_MISS_MATCH() public {
         faucet.drip(alice, 60);
-        address [] memory recvs = new address[](3);
+        address[] memory recvs = new address[](3);
         recvs[0] = bob;
         recvs[1] = jack;
         recvs[2] = rose;
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 10;
         amounts[1] = 20;
-        
+
         //console.log(token.balanceOf(alice));
         assertEq(token.balanceOf(alice), 60);
         vm.prank(alice); //mock sender
-        require(token.approve(address(trans), 60)); 
+        require(token.approve(address(trans), 60));
         vm.prank(alice); //mock sender
         trans.batchTransferToken(IERC20(address(token)), recvs, amounts);
     }
 
+    function test_TransERC20_SIMPLE() public {
+        faucet.drip(alice, 90);
+        address[] memory recvs = new address[](3);
+        recvs[0] = bob;
+        recvs[1] = jack;
+        recvs[2] = rose;
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 10;
+        amounts[1] = 20;
+        amounts[2] = 30;
 
+        //console.log(token.balanceOf(alice));
+        assertEq(token.balanceOf(alice), 90);
+        vm.prank(alice); //mock sender
+        require(token.approve(address(trans), 60));
+        vm.prank(alice); //mock sender
+        trans.batchTransferTokenSimple(IERC20(address(token)), recvs, amounts);
+        assertEq(token.balanceOf(bob), 10);
+        assertEq(token.balanceOf(jack), 20);
+        assertEq(token.balanceOf(rose), 30);
+    }
+
+    function testFail_TransERC20_SIMPLE_NO_ALLOWRANCE() public {
+        faucet.drip(alice, 90);
+        address[] memory recvs = new address[](3);
+        recvs[0] = bob;
+        recvs[1] = jack;
+        recvs[2] = rose;
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 10;
+        amounts[1] = 20;
+        amounts[2] = 30;
+
+        //console.log(token.balanceOf(alice));
+        assertEq(token.balanceOf(alice), 90);
+        vm.prank(alice); //mock sender
+        trans.batchTransferTokenSimple(IERC20(address(token)), recvs, amounts);
+    }
+
+    function testFail_TransERC20_SIMPLE_NO_ENOUGH_ALLOWRANCE() public {
+        faucet.drip(alice, 90);
+        address[] memory recvs = new address[](3);
+        recvs[0] = bob;
+        recvs[1] = jack;
+        recvs[2] = rose;
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 10;
+        amounts[1] = 20;
+        amounts[2] = 30;
+
+        //console.log(token.balanceOf(alice));
+        assertEq(token.balanceOf(alice), 90);
+        vm.prank(alice); //mock sender
+        require(token.approve(address(trans), 59));
+        vm.prank(alice); //mock sender
+        trans.batchTransferTokenSimple(IERC20(address(token)), recvs, amounts);
+    }
+
+    function testFail_TransERC20_SIMPLE_NO_ENOUGH_FUND() public {
+        faucet.drip(alice, 59);
+        address[] memory recvs = new address[](3);
+        recvs[0] = bob;
+        recvs[1] = jack;
+        recvs[2] = rose;
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 10;
+        amounts[1] = 20;
+        amounts[2] = 30;
+
+        //console.log(token.balanceOf(alice));
+        assertEq(token.balanceOf(alice), 59);
+        vm.prank(alice); //mock sender
+        require(token.approve(address(trans), 59));
+        vm.prank(alice); //mock sender
+        trans.batchTransferTokenSimple(IERC20(address(token)), recvs, amounts);
+    }
+
+    function testFail_TransERC20_SIMPLE_LEN_MISS_MATCH() public {
+        faucet.drip(alice, 60);
+        address[] memory recvs = new address[](3);
+        recvs[0] = bob;
+        recvs[1] = jack;
+        recvs[2] = rose;
+        uint256[] memory amounts = new uint256[](2);
+        amounts[0] = 10;
+        amounts[1] = 20;
+
+        //console.log(token.balanceOf(alice));
+        assertEq(token.balanceOf(alice), 60);
+        vm.prank(alice); //mock sender
+        require(token.approve(address(trans), 60));
+        vm.prank(alice); //mock sender
+        trans.batchTransferTokenSimple(IERC20(address(token)), recvs, amounts);
+    }
 }

@@ -7,7 +7,7 @@
      `--'   `---' `--'`--'`----'`--''--'`--'`--''--'`----' `--'.`-  / `--' `--'  `--'   
                                                                `---'     
 */
-   
+
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -36,7 +36,7 @@ contract BatchTransfer {
     function batchTransferToken(IERC20 token, address[] calldata recipients, uint256[] calldata amounts) external {
         require(recipients.length == amounts.length, "Recipients and amounts arrays must have the same length");
 
-        uint256  totalTokens = 0;
+        uint256 totalTokens = 0;
         for (uint256 i = 0; i < recipients.length; i++) {
             totalTokens += amounts[i];
         }
@@ -48,7 +48,9 @@ contract BatchTransfer {
         }
     }
 
-    function batchTransferTokenSimple(IERC20 token, address[] calldata recipients, uint256[] calldata amounts) external {
+    function batchTransferTokenSimple(IERC20 token, address[] calldata recipients, uint256[] calldata amounts)
+        external
+    {
         require(recipients.length == amounts.length, "Recipients and amounts arrays must have the same length");
         for (uint256 i = 0; i < recipients.length; i++) {
             token.transferFrom(msg.sender, recipients[i], amounts[i]);
