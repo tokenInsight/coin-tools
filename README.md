@@ -1,6 +1,6 @@
 # coin-tools
 
-- [Bulk Transfer Tool](https://tokeninsight.com/en/products/bulk-transfer)
+- Try here: [Bulk Transfer Tool](https://tokeninsight.com/en/products/bulk-transfer)
 
 # How to build
 1. First, install Foundry: https://github.com/foundry-rs/foundry
