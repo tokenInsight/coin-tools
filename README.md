@@ -1,4 +1,6 @@
 # coin-tools
+[![Tests](https://github.com/tokeninsight/coin-tools/actions/workflows/test.yml/badge.svg)](https://github.com/tokeninsight/coin-tools/actions/workflows/test.yml)
+
 
 - Try here: [Bulk Transfer Tool](https://tokeninsight.com/en/products/bulk-transfer)
 
